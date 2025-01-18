@@ -121,6 +121,32 @@ app.delete("/books/:id", (req, res) => {
 })
 
 
+app.patch("/books/:id/translation", (req, res) => {
+    const bookID = parseInt(req.params.id, 10)
+
+    const { language } = req.body
+
+    if (!language || typeof language !== "string") {
+        return res.status(400).json({ error: "sorry invalid or missing language" })
+    }
+
+    const book = books.find((b) => b.id === bookID)
+
+
+    if (!book) return res.status(404).json({ error: "sorry the book number is not found " })
+
+
+    console.log(book instanceof Book)
+
+    book.ChangeTranslation(language)
+
+    return res.status(201).json({ message: " the book language success update ", book: book })
+
+})
+
+
+
+
 const port = 3001;
 app.listen(port, () => {
     console.log(`library system is started on http://localhost${port}`)
